@@ -1,5 +1,5 @@
 def send_email(message, recipient, sender="university.help@gmail.com"):
-    if "@" not in recipient or not (
+    if "@" not in recipient and sender or not (
         recipient.endswith(".com")
         or recipient.endswith(".ru")
         or recipient.endswith(".net")
