@@ -21,11 +21,16 @@ class House:
             self.name == other.name and self.number_of_floors == other.number_of_floors
         )
 
-    def __add__(self, value):
-        return f"Название: {self.name}, кол-во этажей: {self.number_of_floors}"
+    def __add__(self, other):
+        if isinstance(other, House):
+            self.number_of_floors += other.number_of_floors
 
-    def __iadd__(self, value):
-        return f"Название: {self.name}, кол-во этажей: {self.number_of_floors}"
+        elif isinstance(other, int):
+            self.number_of_floors += other
+        return self
+
+    def __iadd__(self, other):
+        return self.__add__(other)
 
     def __gt__(self, other):
         return self.number_of_floors > other.number_of_floors
