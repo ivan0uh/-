@@ -32,6 +32,9 @@ class House:
     def __iadd__(self, other):
         return self.__add__(other)
 
+    def __radd__(self, other):
+        return self.__add__(other)
+
     def __gt__(self, other):
         return self.number_of_floors > other.number_of_floors
 
