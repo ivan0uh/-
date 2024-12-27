@@ -1,56 +1,27 @@
-import sys
-import threading
+from multiprocessing import Pool
 import time
-from random import randint
+def read_info(name):
+    all_data_ = open('all_data','w')
+    with open(name, 'r') as file:
+        for i in file.readlines():
+            all_data_.write(i)
+    all_data_.close()
 
-lock = threading.Lock()
+list_file = ['file 1.txt','file 2.txt','file 3.txt','file 4.txt']
 
+start1 = time.time()
+for i in list_file:
+    read_info(i)
+end1 = time.time()
+work_time = end1 - start1
+print(work_time)
 
-class Bank(threading.Thread):
-
-    def __init__(self, balance=500):
-        threading.Thread.__init__(self)
-        self.balance = balance
-
-    def deposit(self):
-        transaction = 100
-        for i in range(1, transaction):
-            dep = randint(50, 500)
-            if self.balance >= 500 and lock.locked():
-                lock.release()
-
-            self.balance = self.balance + dep
-            print(f'Пополнение: {dep}. Баланс: {self.balance}')
-            time.sleep(0.001)
-
-    def take(self):
-        transaction = 100
-        for i in range(1, transaction):
-
-            take_ = randint(50, 500)
-            print(f'Запрос на {take_}')
-            if self.balance >= take_:
-                self.balance = self.balance - take_
-                print(f"Снятие {take_}. Баланс: {self.balance}")
-
-            else:
-                print(f"Запрос отклонен, недостаточно средств")
-                lock.acquire()
-        time.sleep(0.001)
+start2 = time.time()
 
 
-
-
-
-
-
-bk = Bank()
-th1 = threading.Thread(target=Bank.deposit, args=(bk,))
-th2 = threading.Thread(target=Bank.take, args=(bk,))
-
-th1.start()
-th2.start()
-th1.join()
-th2.join()
-
-print(f"Итоговый баланс: {bk.balance}")
+if __name__ == '__main__':
+    with Pool(4) as p:
+        p.map(read_info, list_file)
+end2 = time.time()
+work_time_multi = end2 - start2
+print(work_time_multi)
