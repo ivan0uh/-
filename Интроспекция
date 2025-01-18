@@ -1,0 +1,10 @@
+import inspect
+
+def introspection_info(obj):
+    return {"type":type(obj),"attributes":list(attr for attr in dir(obj) if not callable(getattr(obj, attr))),
+            "methods":list(method for method in dir(obj) if callable(getattr(obj, method))),"модуль": inspect.getmodule(obj)}
+
+
+
+number_info = introspection_info(42)
+print(number_info)
